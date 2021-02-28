@@ -18,7 +18,8 @@ class Game:
         self.welcme()
 
     def get_random_phrase(self):
-        pass
+        shuffle = random.choice(self.phrases)
+        return shuffle
 
     def welcome(self):
         print("""
@@ -41,7 +42,7 @@ class Game:
         if play_again.lower() == "Y":
             Game.start()
         elif play_again.lower() == "N":
-            print("Hope you enjoyed the game! Exiting game...")
+            print("Hope you enjoyed the game! Exiting...")
             sys.exit()
         else:
             print("That was not a valid response. Try Again!")
