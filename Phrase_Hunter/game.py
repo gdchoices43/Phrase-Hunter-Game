@@ -6,43 +6,46 @@ from phrasehunter.phrase import Phrase
 class Game:
     # Creating the initializer for our Game class
     def __init__(self):
-        # Setting the missed attribute to 0
         self.missed = 0
-        # Setting the phrase attribute with phrases for our game
         self.phrases = [
-            Phrase("phrase hunter game"),
-            Phrase("python is awesome"),
-            Phrase("happy coding everyone"),
-            Phrase("tech degree project three"),
-            Phrase("object oriented python")
+            Phrase("Hello World"),
+            Phrase("Python Is Awesome"),
+            Phrase("Happy Coding Everyone"),
+            Phrase("Tech Degree Project Three"),
+            Phrase("Object Oriented Python")
         ]
-        # Setting the activate_phrase attribute to get a random phrase when our
-        # game starts
         self.activate_phrase = self.get_random_phrase()
-        # Setting the guesses attribute with an empty list
         self.guesses = [" "]
 
     # Creating the start game method to start upon running the program
     def start(self):
-        # Calling our welcome message at the start of the game
         self.welcome()
-        while self.game_over() == False:
-            print("\nYou have missed {} out of 5.".format(self.missed))
-            # Calling the activate_phrase to display with underscores
+        while self.missed < 5 and not self.activate_phrase.check_complete(self.guesses):
+            print("\nYou have missed {} out of 5 total misses.".format(self.missed))
             self.activate_phrase.display(self.guesses)
-            self.get_guess()
+            guess = self.get_guess()
+            self.guesses.append(guess)
+            if not self.activate_phrase.check_letter(guess):
+                self.missed += 1
+                if len(guess) > 1:
+                    print("\nONE LETTER AT A TIME, Try Again")
+                elif len(guess) == 0:
+                    print("\nINPUT WAS EMPTY, Try Again")
+    # Got the isalpha() solution from
+    # https://www.kite.com/python/answers/how-to-check-if-a-string-contains-only-letters-in-python
+                elif guess.isalpha() == False:
+                    print("\nUSE LETTERS ONLY, Try Again")
+                self.guesses.append(guess)
+        self.game_over()
 
-    # Creating a method and setting a variable to randomize the phrases at the
-    # start of the game
+    # Creating a method and setting a variable to randomize the phrases at the start of the game
     def get_random_phrase(self):
-        # randomizing our phrases for the game
         shuffle_phrase = random.choice(self.phrases)
         return shuffle_phrase
 
-    # Creating a method to display a welcome message to our user. I've added
-    # some info on how to play the game for the user
+    # Creating a method to display a welcome message to our user. I've added some info on how to play
+    # the game for the user
     def welcome(self):
-        # Welcome message to the player along with instructions on how to play
         print("""
     =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
             Welcome To The Phrase Hunter Game!!
@@ -55,25 +58,9 @@ class Game:
 
     # Creating the method to prompt the user to guess a letter in the phrase
     def get_guess(self):
-        guess = input("\nPick a letter you think is in the phrase: ")
-        if self.activate_phrase.check_letter(guess) == False:
-            self.missed += 1
-            if len(guess) > 1:
-                print("\nOnly pick 1 letter at a time, Try Again!")
-                self.missed += 1
-            elif not guess.isalpha():
-                print("\nInvalid character, use letters only, Try Again!")
-                self.missed += 1
-            elif len(guess) > 1:
-                print("")
-                self.missed += 1
-        elif guess in self.guesses:
-            print("You have already picked that letter, Try Again!")
-        self.guesses.append(guess)
-        return guess
+        prompt = input("\nGuess a letter: ")
+        return prompt
 
-    # Creating the game_over method and displaying the message according to the
-    # outcome of the game
     def game_over(self):
         if self.activate_phrase.check_complete(self.guesses) == True:
             print("""
@@ -92,19 +79,21 @@ class Game:
 
 -*-*-*-YOU HAVE RAN OUT OF LIVES-*-*-*-
             """)
+            self.activate_phrase.display(self.guesses)
             self.keep_playing()
             return True
         else:
             return False
 
-    # Creating a method to prompt the user if they would like to keep playing
     def keep_playing(self):
-        keep_playing = input("\nWould you like to pay again? Enter Y or N: ")
-        if keep_playing.upper() == "Y":
-            Game.start(self)
-        elif keep_playing.upper() == "N":
-            print("Hope you enjoyed the game! Exiting...")
-            sys.exit()
-        else:
-            print("\nThat was not a valid response. Try Again!")
-            return self.keep_playing
+        while True:
+            try:
+                keep_playing = input("\nWould you like to pay again? Enter Y or N: ")
+                if keep_playing.upper() == "Y":
+                    game = Game()
+                    game.start()
+                elif keep_playing.upper() == "N":
+                    print("\nHope you enjoyed the game! Exiting...")
+                    sys.exit()
+            except ValueError:
+                return self.keep_playing

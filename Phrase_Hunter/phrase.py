@@ -19,11 +19,7 @@ class Phrase:
 
     # Checking if the letter guessed is in the phrase
     def check_letter(self, guess):
-        for letter in self.phrase:
-            if guess.lower == letter:
-                return True
-            else:
-                return False
+        return guess in self.phrase
 
     # Checking to see if the whole phrase has been guessed
     def check_complete(self, guesses):
