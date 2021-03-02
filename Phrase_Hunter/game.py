@@ -1,4 +1,3 @@
-import sys
 import random
 from phrasehunter.phrase import Phrase
 
@@ -26,16 +25,7 @@ class Game:
             guess = self.get_guess()
             self.guesses.append(guess)
             if not self.activate_phrase.check_letter(guess):
-                if len(guess) > 1:
-                    print("\nONE LETTER AT A TIME, Try Again")
-                elif len(guess) == 0:
-                    print("\nINPUT WAS EMPTY, Try Again")
-    # Got the isalpha() solution from
-    # https://www.kite.com/python/answers/how-to-check-if-a-string-contains-only-letters-in-python
-                elif guess.isalpha() == False:
-                    print("\nUSE LETTERS ONLY, Try Again")
                 self.missed += 1
-                self.guesses.append(guess)
         self.game_over()
 
     # Creating a method and setting a variable to randomize the phrases at the start of the game
@@ -47,9 +37,9 @@ class Game:
     # the game for the user
     def welcome(self):
         print("""
-=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-        Welcome To The Phrase Hunter Game!!
-+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+    =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+            Welcome To The Phrase Hunter Game!!
+    +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
         """)
         print("""
 I've made 5 phrases, one was picked at random at the start of the game.
@@ -62,18 +52,24 @@ missed guess, Good Luck!
 
     # Creating the method to prompt the user to guess a letter in the phrase
     def get_guess(self):
-        prompt = input("\nGuess a letter: ")
-        return prompt
+        guess = input("\nGuess a letter: ")
+        if len(guess) > 1:
+            print("\nONE LETTER AT A TIME, Try Again")
+        # Got the isalpha() solution from
+        # https://www.kite.com/python/answers/how-to-check-if-a-string-contains-only-letters-in-python
+        elif guess.isalpha() == False:
+            print("\nUSE LETTERS ONLY, Try Again")
+        else:
+            print("\nTry Again")
+        return guess
 
     def game_over(self):
         if self.activate_phrase.check_complete(self.guesses) == True:
             print("""
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-  CONGRATULATIONS! YOU WON PHRASE HUNTER!
+ CONGRATULATIONS! YOU GUESSED THE PHRASE!
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
             """)
-            self.activate_phrase.display(self.guesses)
-            self.keep_playing()
             return True
         elif self.missed == 5:
             print("""
@@ -83,21 +79,6 @@ missed guess, Good Luck!
 
 -*-*-*-YOU HAVE RAN OUT OF LIVES-*-*-*-
             """)
-            self.activate_phrase.display(self.guesses)
-            self.keep_playing()
             return True
         else:
             return False
-
-    def keep_playing(self):
-        while True:
-            try:
-                keep_playing = input("\nWould you like to pay again? Enter Y or N: ")
-                if keep_playing.upper() == "Y":
-                    game = Game()
-                    game.start()
-                elif keep_playing.upper() == "N":
-                    print("\nHope you enjoyed the game! Exiting...")
-                    sys.exit()
-            except ValueError:
-                return self.keep_playing

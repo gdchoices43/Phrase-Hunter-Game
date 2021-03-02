@@ -23,7 +23,7 @@ class Phrase:
         for letter in guesses:
             if letter not in self.phrase:
                 missed_letters_guessed.append(letter)
-        print("\nMissed letters you guessed already:")
+        print("\nList of incorrect guesses:")
         print(", ".join(missed_letters_guessed))
 
     # Checking if the letter guessed is in the phrase
