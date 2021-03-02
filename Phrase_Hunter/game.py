@@ -26,7 +26,6 @@ class Game:
             guess = self.get_guess()
             self.guesses.append(guess)
             if not self.activate_phrase.check_letter(guess):
-                self.missed += 1
                 if len(guess) > 1:
                     print("\nONE LETTER AT A TIME, Try Again")
                 elif len(guess) == 0:
@@ -35,6 +34,7 @@ class Game:
     # https://www.kite.com/python/answers/how-to-check-if-a-string-contains-only-letters-in-python
                 elif guess.isalpha() == False:
                     print("\nUSE LETTERS ONLY, Try Again")
+                self.missed += 1
                 self.guesses.append(guess)
         self.game_over()
 
@@ -47,14 +47,18 @@ class Game:
     # the game for the user
     def welcome(self):
         print("""
-    =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-            Welcome To The Phrase Hunter Game!!
-    +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+        Welcome To The Phrase Hunter Game!!
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
         """)
-        print("I've made 5 phrases, one was picked at random at the start of the game.")
-        print("You pick 1 letter at a time to guess the phrase before your lives run out.")
-        print("If you guess a letter in the phrase and there is multiples they will also")
-        print("appear. You are given 5 lives, each missed guess is -1 life. Good Luck!")
+        print("""
+I've made 5 phrases, one was picked at random at the start of the game.
+You pick 1 letter at a time to guess the phrase before your lives run out.
+If you guess a letter in the phrase and there is multiples they will also
+appear. You are given 5 lives, each missed guess is -1 life. I have provided
+you with an empty list for missed letters guessed. They will appear after a
+missed guess, Good Luck!
+        """)
 
     # Creating the method to prompt the user to guess a letter in the phrase
     def get_guess(self):

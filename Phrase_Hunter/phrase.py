@@ -16,6 +16,15 @@ class Phrase:
                 phrase_display.append("_")
         print("\n")
         print(" ".join(phrase_display))
+        # My mother actually told me I should have a list of letters guessed that weren't in the phrase
+        # So I added that in, even though I know it has nothing to do with the requirements I thought
+        # It would be a great addition to the program for the users sake!
+        missed_letters_guessed = []
+        for letter in guesses:
+            if letter not in self.phrase:
+                missed_letters_guessed.append(letter)
+        print("\nMissed letters you guessed already:")
+        print(", ".join(missed_letters_guessed))
 
     # Checking if the letter guessed is in the phrase
     def check_letter(self, guess):
